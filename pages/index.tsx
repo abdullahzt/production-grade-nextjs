@@ -5,6 +5,8 @@ import Hero from '../components/hero'
 import HomeNav from '../components/homeNav'
 import FeatureSection from '../components/featureSection'
 
+import { home } from '../content';
+
 const Home: FC<{ content: { hero: any; features: any[] } }> = ({ content }) => {
   return (
     <Pane>
@@ -38,11 +40,12 @@ const Home: FC<{ content: { hero: any; features: any[] } }> = ({ content }) => {
  * Should really get this content from our CMS
  */
 
-Home.defaultProps = {
-  content: {
-    features: [{ title: 'default feature', body: 'default body' }],
-    hero: { title: 'default title', body: 'default body' },
-  },
+export const getStaticProps = () => {
+  return {
+    props: {
+      content: home.published
+    }
+  }
 }
 
 export default Home
