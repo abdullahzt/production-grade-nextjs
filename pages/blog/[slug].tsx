@@ -90,7 +90,6 @@ export const getStaticProps = async ({ params }) => {
     post = match.content
   }
 
-  
   const { data } = matter(post)
   const mdxSource = await renderToString(post, { scope: data })
 
