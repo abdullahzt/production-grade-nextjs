@@ -11,6 +11,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { posts } from '../../content'
 import renderToString from  'next-mdx-remote/render-to-string'
+import { GetStaticProps } from 'next'
 
 const BlogPost: FC<Post> = ({ source, frontMatter }) => {
   const content = hydrate(source)
@@ -73,14 +74,14 @@ export const getStaticPaths = () => {
  * Posts can come from the fs or our CMS
  */
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, preview }) => {
   let post
   try {
     const filePath = path.join(process.cwd(), 'posts',  params.slug + 'mdx')
     const match = fs.readFileSync(filePath, 'utf-8')
     post = match
   } catch {
-    const cmsPosts = posts.published.map(post => matter(post))
+    const cmsPosts = ( preview ? posts.draft : posts.published).map(post => matter(post))
     const match = cmsPosts.find(p => p.data.slug === params.slug)
     
     if(!match) {

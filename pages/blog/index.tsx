@@ -8,6 +8,7 @@ import Container from '../../components/container'
 import HomeNav from '../../components/homeNav'
 import PostPreview from '../../components/postPreview'
 import { posts as postsFromCMS } from '../../content'
+import { GetStaticProps } from 'next'
 
 const Blog = ({ posts }) => {
   return (
@@ -28,9 +29,9 @@ const Blog = ({ posts }) => {
   )
 }
 
-export const getStaticProps = () => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
 
-  const cmsPosts = postsFromCMS.published.map(post => matter(post).data)
+  const cmsPosts = (ctx.preview ? postsFromCMS.draft : postsFromCMS.published).map(post => matter(post).data)
 
   const postPath = path.join(process.cwd(), 'posts')
   const filenames = fs.readdirSync(postPath)

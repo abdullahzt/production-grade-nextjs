@@ -6,6 +6,7 @@ import HomeNav from '../components/homeNav'
 import FeatureSection from '../components/featureSection'
 
 import { home } from '../content';
+import { GetStaticProps } from 'next'
 
 const Home: FC<{ content: { hero: any; features: any[] } }> = ({ content }) => {
   return (
@@ -40,10 +41,10 @@ const Home: FC<{ content: { hero: any; features: any[] } }> = ({ content }) => {
  * Should really get this content from our CMS
  */
 
-export const getStaticProps = () => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
-      content: home.published
+      content: ctx.preview ? home.draft : home.published
     }
   }
 }
